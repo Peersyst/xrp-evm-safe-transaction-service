@@ -210,8 +210,14 @@ class Command(BaseCommand):
             ethereum_network in MASTER_COPIES and ethereum_network in PROXY_FACTORIES
         ):
             self.stdout.write(
-                self.style.WARNING("Cannot detect a valid ethereum-network")
+                self.style.WARNING("Cannot detect a ddvalid ethereum-network")
             )
+            default_master = [("0xE51abdf814f8854941b9Fe8e3A4F65CAB4e7A4a8", 1, "1.3.0+L2")]
+            default_proxy = [("0xE89ce3bcD35bA068A9F9d906896D3d03Ad5C30EC", 1)]
+            self._setup_safe_master_copies(default_master)
+            self._setup_erc20_indexing()
+            self._setup_safe_proxy_factories(default_proxy)
+
 
     def _setup_safe_master_copies(
         self, safe_master_copies: Sequence[Tuple[str, int, str]]
