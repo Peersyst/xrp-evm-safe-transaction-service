@@ -6,6 +6,7 @@ volumes:
 services:
   nginx:
     image: nginx:alpine
+    restart: always
     hostname: nginx
     ports:
       - "8000:8000"
@@ -17,6 +18,7 @@ services:
 
   redis:
     image: redis:alpine
+    restart: always
     ports:
       - "6379:6379"
     command:
@@ -27,11 +29,14 @@ services:
 
   db:
     image: postgres:13-alpine
+    restart: always
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./docker/db:/docker-entrypoint-initdb.d
 
   web:
     build:
@@ -43,6 +48,7 @@ services:
       - db
       - redis
     working_dir: /app
+    restart: always
     ports:
       - "8888:8888"
     volumes:
@@ -53,6 +59,7 @@ services:
     build:
       context: .
       dockerfile: docker/web/Dockerfile
+    restart: always
     env_file:
       - .env
     environment:
